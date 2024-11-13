@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Rechercher un Client</h1>
+    <form method="GET" action="#">
+    <div class="form-group">
+      <label for="search_field">Champ de Recherche :</label>
+      <select class="form-control" id="search_field" name="search_field">
+        <option value="id">ID</option>
+        <option value="name">Nom</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="search_value">Valeur de Recherche :</label>
+      <input type="text" class="form-control" id="search_value" name="search_value" placeholder="Entrez la valeur de recherche">
+    </div>
+    <button type="submit" class="btn btn-primary">Rechercher</button>
+  </form>
+  {% if clients %}
+  <h2>Résultats de la Recherche</h2>
+  <ul>
+    {% for client in clients %}
+      <li>
+        <strong>ID:</strong> {{ client.id }}<br>
+        <strong>Nom:</strong> {{ client.nomclient }}<br>
+        <strong>Type:</strong> {{ client.typeclient }}<br>
+        <strong>Categorie:</strong> {{ client.vchambre_type }}<br>
+        <!-- Include other client fields as needed -->
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>Aucun client trouvé.</p>
+{% endif %}
+</div>
+
+
+{% endblock content %}

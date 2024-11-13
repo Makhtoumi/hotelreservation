@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h1>Détails de la Réservation</h1>
+    <table class="table">
+        <tr>
+            <th>Code de Réservation</th>
+            <th>Nom de l'Association</th>
+            <th>Date de Réservation</th>
+            <th>Date d'Arrivée</th>
+            <th>Date de Départ</th>
+            <th>Pension</th>
+            <th>Catégorie</th>
+            <th>Nombre de Personnes</th>
+            <th>Liste des Occupants</th>
+            <th>Chambres Assignées</th>
+            <th>Prix Final</th>
+        </tr>
+        <tr>
+            <td>{{ reservation_groube_finale.code_assi }}</td>
+            <td>{{ reservation_groube_finale.nom_assi }}</td>
+            <td>{{ reservation_groube_finale.date_reservation }}</td>
+            <td>{{ reservation_groube_finale.date_arrivee }}</td>
+            <td>{{ reservation_groube_finale.date_depart }}</td>
+            <td>
+                {% if reservation_groube_finale.pension == 'pension complte' %}
+                    PC
+                {% elif reservation_groube_finale.pension == 'demi pension' %}
+                    DP
+                {% elif reservation_groube_finale.pension == 'LOG'  %}
+                    LOG
+                {% elif reservation_groube_finale.pension == 'LPD'  %}
+                    LPD
+                {% else %}
+                   ERROR
+
+                {% endif %}
+            </td>            
+            <td>{% if reservation_groube_finale.categorie == 'indiv' %}
+                SGL 
+                {% elif reservation_groube_finale.categorie == 'double' %}
+                DBL
+                {% elif reservation_groube_finale.categorie == 'triple' %}
+                TPL
+                {% else%}
+                ERROR 
+                {% endif %}
+            </td>
+            <td>{{ reservation_groube_finale.nbr_personne }}</td>
+            <td>{{ reservation_groube_finale.occupantslist }}</td>
+            <td>{{ reservation_groube_finale.chambre_taked }}</td>
+            
+            {% if total_price_all_parts %}
+
+            <td>{{ total_price_all_parts }} {{associationcriteria.monnaie}}</td>
+            {% else %}
+            <td colspan="11">Il ya des problem avec ce contrat avec ce client. Verifier svp<a href="{% url 'association_criteria_detail' reservation_groube_finale.code_assi  %}" >Verifier</a></td>
+            
+
+            {% endif %}
+
+
+        </tr>
+    </table>
+    {% if facture %}
+    <a href="{% url 'generate_pdff' facture.id reservation_groube_finale.id  %}" class="btn btn-primary">Générer Facture</a>
+{% endif %}
+</div>
+{% if advertisement %}
+<div class="advertisement">
+    <p>{{ advertisement }}</p>
+</div>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <h2>Détails de Contrat</h2>
+    <a href="{% url 'generate_pdfff' association_id=criteria.association_id %}" class="btn btn-primary">Générer Contrat</a>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Champ</th>
+          <th>Valeur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Association</td>
+          <td>{{ criteria.association }}</td>
+        </tr>
+        <tr>
+          <td>Début du Contrat</td>
+          <td>{{ criteria.debut_contart }}</td>
+        </tr>
+        <tr>
+          <td>Fin du Contrat</td>
+          <td>{{ criteria.fin_contrat }}</td>
+        </tr>
+        <tr>
+          <td>Monnaie</td>
+          <td>{{ criteria.get_monnaie_display }}</td>
+        </tr>
+        <tr>
+          <td>Modifier</td>
+          <td><a href="{% url 'edit_association_criteria' association_id=criteria.association.code %}" class="btn btn-primary">Modifier Contrat</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <h3>Saisons et Catégories Associées :</h3>
+    {% for season in seasons %}
+      <h4>Season: {{ season.name_season }}</h4>
+      <a href="{% url 'delete_season' season_id=season.id %}" >Supprimer Cette Saison</a>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date de Début</th>
+            <th>Date de Fin</th>
+            <th>Modifier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ season.start_date }}</td>
+            <td>{{ season.end_date }}</td>
+            <td><a href="{% url 'edit_season' season_id=season.id %}" class="btn btn-primary">Modifier</a></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Catégorie</th>
+            <th>Prix Demi-pension</th>
+            <th>Prix Pension complète</th>
+            <th>Prix Logement</th>
+            <th>Prix LPD</th>
+            <th>Modifier</th>
+          </tr>
+        </thead>
+        <tbody>
+          <a href="{% url 'create_season_categorie' season_id=season.id %}" >Ajouter une nouvelle Categorie</a>
+
+          {% for category in season.categories.all %}
+            <tr>
+              <td>{{ category.get_cat_display }}</td>
+              <td>{{ category.demipension_price }}</td>
+              <td>{{ category.pensioncomplte_price }}</td>
+              <td>{{ category.log_price }}</td>
+              <td>{{ category.lpd_price }}</td>
+              <td>
+                <a href="{% url 'update_season_categorie' season_categorie_id=category.id %}" class="btn btn-primary">Modifier</a>
+                <a href="{% url 'delete_season_categorie' season_categorie_id=category.id %}" class="btn btn-danger">Supprimer</a>
+
+              </td>
+            </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endfor %}
+    <a href="{% url 'create_seasons_for_association_criteria' association_criteria_id=criteria.id %}" class="btn btn-primary">Ajouter une nouvelle saison</a>
+
+  </div>
+{% endblock %}

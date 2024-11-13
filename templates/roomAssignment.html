@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <h1>Occupants dans les Chambres</h1>
+    
+    <form method="GET" class="search-form">
+      <input type="text" name="search_query" placeholder="Rechercher par Nom, Code, Occupants, Date...">
+      <input type="date" name="search_date" value="{{ date.today|date:'Y-m-d' }}" placeholder="Date">
+      <button type="submit">Rechercher</button>
+    </form>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Chambre</th>
+          <th>Occupants</th>
+          <th>Date d'Arrivée</th>
+          <th>Date de Sortie</th>
+          <th>Code</th>
+          <th>Nom du Client</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for room_occupants in roomAssignment %}
+          <tr>
+            <td>{{ room_occupants.room.chambre_id }}</td>
+            <td>{{ room_occupants.occupants }}</td>
+            <td>{{ room_occupants.date_arriv }}</td>
+            <td>{{ room_occupants.date_sortie }}</td>
+            <td>{{ room_occupants.code_assi }}</td>
+            <td>{{ room_occupants.nom_assi }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}

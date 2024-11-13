@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load custom_filters %}
+
+  <div class="container">
+    <h2>Liste des Réservations</h2>
+    <form method="get">
+      <input type="text" name="id" placeholder="Rechercher par ID...">
+      Date d'arrivee:<input type="date" name="date_arrivee" placeholder="Rechercher par Date d'Arrivée...">
+      Date de depart:<input type="date" name="date_depart" placeholder="Rechercher par Date de Départ...">
+      <button type="submit">Rechercher</button>
+    </form>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Numéro de Réservation</th>
+          <th>Client</th>
+          <th>Date d'Arrivée</th>
+          <th>Date de Départ</th>
+          <th>Categorie</th>
+          <th>Pension</th>
+          <th>Pax</th>
+          <th>Chambre</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reservation in reservations %}
+          <tr>
+            <td>{{ reservation.id }}</td>
+            <td>Client individuel</td>
+            <td>{{ reservation.date_arriv }}</td>
+            <td>{{ reservation.date_sortie }}</td>
+            <td>{{ reservation.categorie }}</td>
+            <td>{{ reservation.type_pension }}</td>
+            <td>{% for pax in reservation.paxes.all %}
+                <a href="{% url 'update_pax' pax_id=pax.id %}">{{ pax.first_name }}.{{ pax.last_name }}</a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}</td>
+                <td>{% for chambre in reservation.chambre.all %}
+                    {{ chambre.chambre_id }}
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}</td>
+                {% if not user|user_belongs_to_group:"Réceptionniste" %}
+                <td> 
+              <a href="{% url 'edit_reservation' reservation_id=reservation.id %}" class="btn btn-primary">Modifier</a>
+            </td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

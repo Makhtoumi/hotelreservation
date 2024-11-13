@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h2>Recherche de chambres disponibles</h2>
+  <form method="GET" action="#">
+    <div class="form-group">
+      <label for="date_arriv">Date d'arrivée :</label>
+      <input type="date" class="form-control" id="date_arriv" name="date_arriv" value="{{ date_arriv }}">
+    </div>
+    <div class="form-group">
+      <label for="date_sortie">Date de sortie :</label>
+      <input type="date" class="form-control" id="date_sortie" name="date_sortie" value="{{ date_sortie }}">
+    </div>
+    <div class="form-group">
+        <label for="chambre_type">Type de chambre :</label>
+        <select class="form-control" id="chambre_type" name="chambre_type">
+          <option value="">Tous</option>
+          {% for type_choice in x %}
+            <option value="{{ type_choice.0 }}">{{ type_choice.1 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="chambre_vue">Vue de la chambre :</label>
+        <select class="form-control" id="chambre_vue" name="chambre_vue">
+          <option value="">Tous</option>
+          {% for vue_choice in y %}
+            <option value="{{ vue_choice.0 }}">{{ vue_choice.1 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    <button type="submit" class="btn btn-primary">Rechercher</button>
+  </form>
+
+  {% if available_rooms %}
+    <h2>Chambres disponibles</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID de la chambre</th>
+          <th>Type</th>
+          <th>Vue</th>
+          <th>Informations supplémentaires</th>
+          <!-- Add other room information headers here -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for room in available_rooms %}
+          <tr>
+            <td>{{ room.chambre_id }}</td>
+            <td>{{ room.get_chambre_type_display }}</td>
+            <td>{{ room.get_chambre_Vue_display }}</td>
+            <td><!-- Add additional room information here --></td>
+            <!-- Add other room information cells here -->
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Aucune chambre disponible trouvée.</p>
+  {% endif %}
+</div>
+{% endblock content %}

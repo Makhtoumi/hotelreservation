@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Tableau de bord</h1>
+
+    <div class="dashboard-row">
+        <div class="dashboard-card">
+            <h5 class="card-title">Quarterly Sum Chart</h5>
+            <div id="quarterly-chart"></div>
+        </div>
+
+
+    </div>
+    
+<div class="dashboard-container">    
+    <div class="dashboard-row">
+        <div class="dashboard-card">
+            <h5 class="card-title">Client les plus courants</h5>
+            <div id="client-chart"></div>
+        </div>
+        <div class="dashboard-card">
+            <h5 class="card-title">Nationalities les plus courants</h5>
+            <div id="natio-chart"></div>
+        </div>
+</div>
+<div class="dashboard-container">    
+    <div class="dashboard-row">
+        <div class="dashboard-card">
+            <h5 class="card-title">Pension</h5>
+            <div id="pension_sums-chart"></div>
+        </div>
+
+        <div class="dashboard-card">
+            <h5 class="card-title">Category</h5>
+            <div id="category-sums-chart"></div>
+        </div>
+</div>
+</div>
+    
+<div class="dashboard-card">
+    <h5 class="card-title">Client les plus courants</h5>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Classement</th>
+                <th>Code</th>
+                <th>Nom </th>
+                <th>Nombre de Réservations</th>
+                <th>Valeur totale</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in most_common_entries %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ entry.code_assi }}</td>
+                <td>{{ entry.nom_assi }}</td>
+                <td>{{ entry.reservation_count }}</td>
+                <td>{{ entry.total_price }} {{ entry.monnaie }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // JavaScript code to render ApexCharts
+    document.addEventListener('DOMContentLoaded', function() {
+        // Data for the Client Bar Chart (using Django template variables)
+var clientChartData = [
+{% for entry in most_common_entries %}
+    { x: "{{ entry.nom_assi }}", y: {{ entry.total_price }} },
+{% endfor %}
+];
+
+var clientChartOptions = {
+chart: {
+    type: 'bar',
+    height: 400 // Adjust the chart height as needed
+},
+series: [{
+    name: 'Valeur de Réservations',
+    data: clientChartData
+}],
+xaxis: {
+    categories: clientChartData.map(data => data.x),
+    title: {
+        text: 'Client les plus courants'
+    }
+},
+yaxis: {
+    title: {
+        text: 'Valeur de Réservations'
+    }
+}
+};
+
+// Create the Client Bar Chart
+var clientBarChart = new ApexCharts(document.querySelector('#client-chart'), clientChartOptions);
+clientBarChart.render();
+
+        // Data for the Quarterly Sum Chart (using Django template variables)
+        var quarterlyData = [
+            {% for quarterly_sum in quarterly_sums %}
+                { x: "{{ quarterly_sum.start_date }} - {{ quarterly_sum.end_date }}", y: {{ quarterly_sum.quarterly_sum }} },
+            {% endfor %}
+        ];
+
+        var quarterlyChartOptions = {
+            chart: {
+                type: 'area', // Change the chart type to 'area'
+                height: 300 // Adjust the chart height as needed
+            },
+            series: [
+                {
+                    name: 'Quarterly Sum',
+                    data: quarterlyData
+                }
+            ],
+            xaxis: {
+                categories: quarterlyData.map(data => data.x),
+                title: {
+                    text: 'Quarter'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Sum'
+                }
+            }
+        };
+
+        // Create the Quarterly Sum Area Chart
+        var quarterlyChart = new ApexCharts(document.querySelector('#quarterly-chart'), quarterlyChartOptions);
+        quarterlyChart.render();
+
+// Data for the Category Sums Chart (using Django template variables)
+var categorySumsData = [
+    {% for category_sum in category_sums %}
+    { x: "{% if category_sum.categorie == 'indiv' %}SGL{% elif category_sum.categorie == 'double' %}DBL{% elif category_sum.categorie == 'triple' %}TPL{% else %}Not found{% endif %}", y: {{ category_sum.category_sum }} },
+    {% endfor %}
+];
+
+var categorySumsChartOptions = {
+    chart: {
+        type: 'pie',
+        height: 300 // Adjust the chart height as needed
+    },
+    series: categorySumsData.map(data => data.y),
+    labels: categorySumsData.map(data => data.x),
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: 300
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }]
+};
+
+// Create the Category Sums Pie Chart
+var categorySumsPieChart = new ApexCharts(document.querySelector('#category-sums-chart'), categorySumsChartOptions);
+categorySumsPieChart.render();
+
+var nationalityChartData = [
+    {% for entry in natio %}
+        { x: "{{ entry.nationalite }}", y: {{ entry.count }} , z:"{{entry.country_name}}" },
+    {% endfor %}
+];
+
+var nationalityChartOptions = {
+    chart: {
+        type: 'bar',
+        height: 400 // Adjust the chart height as needed
+    },
+    series: [{
+        name: 'Number of Occupants',
+        data: nationalityChartData
+    }],
+    xaxis: {
+        categories: nationalityChartData.map(data => data.x),
+        title: {
+            text: 'Nationalities'
+        }
+    },
+    yaxis: {
+        title: {
+            text: 'Number of Occupants'
+        }
+    },
+    tooltip: {
+        y: {
+            formatter: function (val) {
+                return val;
+            }
+        },
+        custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+            const nationalite = nationalityChartData[dataPointIndex].x;
+            const flagUrl = '/static/flags/' + nationalite.toLowerCase() + '.gif';
+            const countryName = nationalityChartData[dataPointIndex].z; // Access the country_name from the chart data
+            return '<div class="tooltip"><img src="' + flagUrl + '"/><span>' +  countryName + "  "+ series[seriesIndex][dataPointIndex]  + '</span></div>';
+        }
+    }
+};
+
+// Create the Nationality Bar Chart
+var nationalityBarChart = new ApexCharts(document.querySelector('#natio-chart'), nationalityChartOptions);
+nationalityBarChart.render();
+   
+var pensionSumsData = [
+    {% for category_sum in pension_sums %}
+        { x: "{% if category_sum.pension == 'pension complte' %}PC{% elif category_sum.pension == 'demi pension' %}demi pension{% elif category_sum.pension == 'LOG' %}LOG{% elif category_sum.pension == 'LPD' %}LPD{% else %}Not found{% endif %}", y: {{ category_sum.pension_sum }} },
+    {% endfor %}
+];
+
+var categorySumsChartOptions = {
+    chart: {
+        type: 'pie',
+        height: 300 // Adjust the chart height as needed
+    },
+    series: pensionSumsData.map(data => data.y),
+    labels: pensionSumsData.map(data => data.x),
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: 300
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }]
+};
+
+// Create the Category Sums Pie Chart
+var categorySumsPieChart = new ApexCharts(document.querySelector('#pension_sums-chart'), categorySumsChartOptions);
+categorySumsPieChart.render();
+
+
+
+
+});
+</script>
+<style>
+    .dashboard-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -10px; /* Adjust margin as needed */
+    }
+    
+    .dashboard-card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        flex: 1;
+        margin: 10px; /* Adjust margin as needed */
+    
+    }
+
+    .dashboard-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .card-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .card-text.price {
+        font-size: 18px;
+    }
+
+    .association-list li {
+        margin-bottom: 6px;
+    }
+
+    /* Style the table */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #f0f0f0;
+        font-weight: bold;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f8f8f8;
+    }
+</style>
+{% endblock content %}

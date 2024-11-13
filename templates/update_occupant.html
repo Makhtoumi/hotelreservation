@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <h2>Mettre à jour l'occupant</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Mettre à jour l'occupant</button>
+    </form>
+  </div>
+{% endblock %}

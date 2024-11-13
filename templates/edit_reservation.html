@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <h2>Modifier la Réservation</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </form>
+    <a href="{% url 'reservation_info' reservation_id=reservation.id %}" class="btn btn-secondary mt-3">Annuler</a>
+  </div>
+{% endblock %}

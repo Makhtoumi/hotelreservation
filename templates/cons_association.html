@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Détails de l'Association</h1>
+    <table class="table">
+        <tr>
+            <th>Code</th>
+            <td>{{ association.code }}</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>{{ association.nom }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{ association.type.assoctiontype }}</td>
+        </tr>
+        <tr>
+            <th>Address</th>
+            <td>{{ association.adress }}</td>
+        </tr>
+        <!-- Add other fields as needed -->
+    </table>
+</div>
+{% endblock content %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card custom-card">
+                    <div class="card-header custom-card-header">
+                        <h1 class="text-center text-white">Sélectionnez une Date</h1>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="chosen_date" class="custom-label">Date :</label>
+                                <input type="date" id="chosen_date" name="chosen_date" class="form-control custom-input" value="{% now 'Y-m-d' %}" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block custom-button">Valider</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        /* Styles CSS personnalisés */
+        .custom-card {
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .custom-card-header {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .custom-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .custom-input {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .custom-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            font-weight: bold;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-button:hover {
+            background-color: #0056b3;
+        }
+
+        .custom-button:focus {
+            outline: none;
+            box-shadow: none;
+        }
+    </style>
+{% endblock content %}

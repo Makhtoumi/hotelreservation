@@ -1,0 +1,16 @@
+{% extends 'login_base.html' %}
+
+{% block content %}
+  <div class="login-container">
+    <h2 class="form-title">Bienvenue</h2>
+    <form class="login-form" method="POST">
+      {% csrf_token %}
+        <input type="text" id="username" name="username" class="input-field" placeholder="Nom d'utilisateur" required>
+        <input type="password" id="password" name="password" class="input-field" placeholder="Mot de passe" required>
+        <button type="submit" class="btn">Connexion</button>
+    </form>
+    {% for message in messages %}
+    <p class="error-message">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endblock content %}

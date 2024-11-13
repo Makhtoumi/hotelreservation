@@ -1,0 +1,36 @@
+<!-- view_seasons.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Seasons for {{ association.name }}</h1>
+  {% if seasons_with_prices %}
+    <table>
+      <tr>
+        <th>Nom de la saison</th>
+        <th>Date de début</th>
+        <th>Date de fin</th>
+        <th>Prix pour chambre simple</th>
+        <th>Prix pour chambre double</th>
+        <th>Prix pour chambre triple</th>
+        <th>Prix en demi-pension</th>
+        <th>Prix en pension complète</th>
+      </tr>
+      {% for season_price in seasons_with_prices %}
+        <tr>
+          <td>{{ season_price.season.name }}</td>
+          <td>{{ season_price.season.start_date }}</td>
+          <td>{{ season_price.season.end_date }}</td>
+          <td>{{ season_price.chambresingle_price }}</td>
+          <td>{{ season_price.chambredouble_price }}</td>
+          <td>{{ season_price.chambtriple_price }}</td>
+          <td>{{ season_price.demipension_price }}</td>
+          <td>{{ season_price.pensioncomplte_price }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>Aucune saison trouvée {{ association.name }}.</p>
+  {% endif %}
+  <a href="{% url 'create_association_criteria' %}">Ajouter une saison</a>
+{% endblock %}

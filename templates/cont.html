@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content %}
+<style>
+    /* Enhanced styles */
+    .container {
+        margin-top: 50px;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .btn-container {
+      margin: 10px;
+    }
+
+    .btn-block {
+        padding: 12px 24px;
+        font-size: 18px;
+        border-radius: 12px;
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        background: linear-gradient(45deg, #2196F3, #0e4674);
+        background-size: 200% 100%;
+        animation: gradientAnimation 3s linear infinite, floatingAnimation 5s alternate infinite;
+    }
+
+    .btn-block:hover {
+        background-position: right center;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .col-md-12 {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .btn-icon {
+        margin-right: 10px;
+        font-size: 24px;
+    }
+
+    .btn-text {
+        display: inline-block;
+        font-size: 16px;
+    }
+
+    /* Floating Animation */
+    @keyframes floatingAnimation {
+        from {
+            transform: translateY(0);
+        }
+        to {
+            transform: translateY(-10px);
+        }
+    }
+
+    h1, h2, h3 {
+        font-weight: bold;
+        margin-bottom: 20px;
+        font-size:24px;
+    }
+
+    p {
+        margin-bottom: 16px;
+    }
+</style>
+
+<div class="container">
+    <h1>Bienvenue sur Votre Tableau de Bord de Gestion des Contrats</h1>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-container">
+                <a href="{% url 'association_criteria_list' %}" class="btn btn-primary btn-block btn-tooltip" data-toggle="tooltip" title="Modifier-Details-Supprimer les contrats">
+                    <span class="btn-icon"><i class="fas fa-file-contract"></i></span> Liste de contrats
+                </a>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="btn-container">
+                <a href="{% url 'copy_criteria_interface' %}" class="btn btn-primary btn-block btn-tooltip" data-toggle="tooltip" title="Obtenir les critères de contrat pour une autre Association">
+                    <span class="btn-icon"><i class="fas fa-copy"></i></span> Dupliquer les Contrat
+                </a>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <div class="btn-container">
+                <a href="{% url 'pdf_list' %}" class="btn btn-primary btn-block">
+                    <span class="btn-icon"><i class="fas fa-file-pdf"></i></span> Reçus et Contrats .pdf
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

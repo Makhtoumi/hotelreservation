@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Accès Refusé</h1>
+    <p>Vous n'avez pas la permission d'accéder à cette page.</p>
+    <a class="btn" href="{% url 'index' %}">Retourner à la page d'accueil</a>
+</div>
+{% endblock content %}
+

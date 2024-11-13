@@ -1,0 +1,32 @@
+
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+
+<form method="post">
+    {% csrf_token %}
+    
+    <h2>Affecter des Chambres aux Paxes</h2>
+    
+    {% for pax in paxes %}
+      <p>
+        {{ pax.first_name }} {{ pax.last_name }} (Age: {{ pax.age }})<br>
+        Affecter une Chambre :  <select name="pax_{{ pax.id }}_room">
+          <option value="" selected>Choisir une Chambre</option>
+          {% for room in available_rooms %}
+            <option value="{{ room.chambre_id }}">{{ room.chambre_id }}</option>
+          {% endfor %}
+        </select>
+      </p>
+    {% endfor %}
+  
+    <input type="submit" value="Assign Rooms">
+  </form>
+</div>
+
+  
+
+
+{% endblock content %}

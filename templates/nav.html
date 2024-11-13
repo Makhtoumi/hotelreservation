@@ -1,0 +1,13 @@
+<header class="header">
+    
+    <h7>Hello, {{ request.user.username }}</h7>
+  
+    <button onclick="logout()">Logout</button>
+
+    <script>
+      function logout() {
+        
+        window.location.href = "{% url 'logout' %}";
+      }
+    </script>
+  </header>

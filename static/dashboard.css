@@ -1,0 +1,54 @@
+/* Center the header and set its font size and color */
+.container h1 {
+    text-align: center;
+    font-size: 36px;
+    color: #333;
+  }
+  
+  /* Style the cards */
+  .card {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .card-text {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  /* Style the table */
+  .table {
+    font-size: 16px;
+  }
+  
+  /* Highlight the rows with a red background for unreserved rooms */
+  .table tbody tr[style="background-color: red;"] {
+    color: #fff;
+    background-color: #ff5252;
+  }
+  
+  /* Style the list */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  ul li {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  /* Add some spacing between elements */
+  .container > div {
+    margin-bottom: 20px;
+  }
+  

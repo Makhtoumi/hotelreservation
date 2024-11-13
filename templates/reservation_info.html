@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2>Informations sur la Réservation</h2>
+    <table class="table">
+        <tr>
+            <th>ID de Réservation</th>
+            <td>{{ reservation.id }}</td>
+        </tr>
+        <tr>
+            <th>Client</th>
+            <td>{{ reservation.clients }}</td>
+        </tr>
+        <tr>
+            <th>Date d'Arrivée</th>
+            <td>{{ reservation.date_arriv }}</td>
+        </tr>
+        <tr>
+            <th>Date de Départ</th>
+            <td>{{ reservation.date_sortie }}</td>
+        </tr>
+        <tr>
+            <th>Nombre de Personnes</th>
+            <td>{{ reservation.nbr_personne }}</td>
+        </tr>
+        <tr>
+            <th>Prix sans réduction</th>
+            <td>{{ finalewithdiscount }}</td>
+        </tr>
+        <tr>
+            <th>Prix Final</th>
+            <td>{{ finale }}</td>
+        </tr>
+        <!-- Add more rows as needed -->
+
+    </table>
+
+    <h3>Chambres Assignées :</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Chambres Assignées</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in reservation.chambre.all %}
+                <tr>
+                    <td>Chambre {{ room.chambre_id }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    {% if facture %}
+    <a href="{% url 'generate_pdf' facture.id reservation.id  %}" class="btn btn-primary">Générer le PDF</a>
+    {% endif %}
+</div>
+{% endblock content %}

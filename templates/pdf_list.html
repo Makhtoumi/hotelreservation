@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content %}
+<style>
+    /* Common Styles */
+
+    /* Container Styles */
+    .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 40px;
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Header Styles */
+    .pdf-list-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    /* Search Form Styles */
+    .search-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .search-input {
+        flex: 1;
+        padding: 15px;
+        border: none;
+        border-radius: 8px 0 0 8px;
+        background-color: #f7f7f7;
+        font-size: 16px;
+    }
+
+    .search-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        padding: 15px 30px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .search-button:hover {
+        background-color: #0056b3;
+    }
+
+    /* List Styles */
+    .list {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+    }
+
+    .list-item {
+        padding: 20px;
+        border-bottom: 1px solid #e5e5e5;
+        background-color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .list-item:hover {
+        background-color: #f9f9f9;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .list-link {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: 700;
+        transition: color 0.3s;
+    }
+
+    .list-link:hover {
+        color: #0056b3;
+    }
+
+    /* Pagination Styles */
+    .pagination {
+        margin-top: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .page-link {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 0 5px;
+        font-size: 16px;
+        color: #007bff;
+        text-decoration: none;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .page-link.active-page,
+    .page-link:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    /* Additional Enhancements */
+    .highlight {
+        background-color: #e6f7ff;
+    }
+
+    .section-title {
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #333; /* Updated color for better contrast */
+    }
+    
+    .section-description {
+        font-size: 18px;
+        color: #777;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+</style>
+
+<div class="container">
+    <div class="pdf-list-header">
+        <p class="section-description">Les factures sont nommées en utilisant la convention suivante : (code client _ code facture _ date de génération de facture(dd-mm-yyyy))</p>
+        <form class="search-form" method="GET" action="{% url 'pdf_list' %}">
+            <input class="search-input" type="text" name="q" placeholder="Rechercher des fichiers PDF" value="{{ search_query }}">
+            <button class="search-button" type="submit">Rechercher</button>
+        </form>
+        <h1 class="section-title">Liste des factures</h1>
+    </div>
+    <ul class="list">
+        {% for pdf_file in pdf_files %}
+        <li class="list-item">
+            <a class="list-link" href="{% url 'view_pdf' pdf_file %}" target="_blank">{{ pdf_file }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        {% if pdf_files.has_previous %}
+            <a class="page-link" href="?page={{ pdf_files.previous_page_number }}">Précédent</a>
+        {% endif %}
+        {% for page in pdf_files.paginator.page_range %}
+            <a class="page-link{% if page == pdf_files.number %} active-page{% endif %}" href="?page={{ page }}">{{ page }}</a>
+        {% endfor %}
+        {% if pdf_files.has_next %}
+            <a class="page-link" href="?page={{ pdf_files.next_page_number }}">Suivant</a>
+        {% endif %}
+    </div>
+
+    {% if not user|user_belongs_to_group:"Réceptionniste" %}
+    <div class="contract-list">
+        <h1 class="section-title">Liste des contrats</h1>
+        <ul class="list">
+            {% for pdf_file in contract %}
+            <li class="list-item">
+                <a class="list-link" href="{% url 'view_pdf' pdf_file %}" target="_blank">{{ pdf_file }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    
+        <!-- Pagination for contracts -->
+        <div class="pagination">
+            {% if contract.has_previous %}
+                <a class="page-link" href="?contract_page={{ contract.previous_page_number }}">Précédent</a>
+            {% endif %}
+            {% for page in contract.paginator.page_range %}
+                <a class="page-link{% if page == contract.number %} active-page{% endif %}" href="?contract_page={{ page }}">{{ page }}</a>
+            {% endfor %}
+            {% if contract.has_next %}
+                <a class="page-link" href="?contract_page={{ contract.next_page_number }}">Suivant</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock content %}

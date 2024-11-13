@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    /* CSS styling starts here */
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f7f7f7;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .client-form {
+        width: 100%;
+
+    }
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        transition: border-color 0.3s ease-in-out;
+    }
+  
+    .client-list-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px;
+      background-color: #ffffff;
+      border-radius: 25px;
+      box-shadow: 0px 15px 50px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+  
+    .client-list-title {
+      margin-bottom: 20px;
+      font-size: 32px;
+      color: #333;
+    }
+  
+    .client-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+    }
+  
+    .client-table th, .client-table td {
+      padding: 20px;
+      text-align: left;
+      font-size: 16px;
+      color: #333;
+    }
+  
+    .client-table th {
+      background-color: #e8f1ff;
+      font-weight: bold;
+    }
+  
+    .client-table td {
+      border-top: 1px solid #cdd6e5;
+      transition: background-color 0.3s ease;
+    }
+  
+    .client-table tr:hover {
+      background-color: #f7f9fc;
+    }
+  
+    .edit-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      cursor: pointer;
+    }
+  
+    .edit-button:hover {
+      background-color: #0056b3;
+    }
+  
+    /* Additional enhancements */
+    .add-client-button {
+      position: absolute;
+      bottom: -40px;
+      right: 0;
+      left: 0;
+      margin: 0 auto;
+      display: block;
+      width: 200px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 15px 0;
+      border-radius: 8px;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+  
+    .add-client-button:hover {
+      background-color: #218838;
+    }
+    /* CSS styling ends here */
+
+    .btn {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+    
+    .btn-pr,
+    .btn-secondary {
+          font-size: 18px;
+        border-radius: 15px;
+    }
+    
+    .btn-pr {
+        background-color: #007bff;
+        color: #fff;
+    }
+    
+    .btn-secondary {
+        background-color: #007bff;
+        color: #fff;
+    }
+    
+    .btn:hover {
+        transform: scale(1.05); /* Add a slight scale effect on hover */
+    }
+    
+    .btn-pr:hover,
+    .btn-secondary:hover {
+        background-color: #0056b3;
+    }
+
+      </style>
+      <div class="container">
+        <h1>Créer un Client</h1>
+        <form method="post" class="client-form">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+            </div>
+            {% endfor %}
+            
+            <div class="button-container">
+                <button type="submit" class="btn btn-pr">Créer</button>
+                <button class="btn btn-secondary" onclick="window.location='{% url 'association_list' %}'">Retour à la Liste des Clients</button>
+            </div>
+        </form>
+        
+    </div>
+        
+{% endblock content %}

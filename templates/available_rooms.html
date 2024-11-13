@@ -1,0 +1,16 @@
+<!-- available_rooms.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <h2>Chambres disponibles pour {{ client.nomclient }}</h2>
+  <ul>
+    {% for room in available_rooms %}
+      <li>{{ room.chambre.chambre_id }} - {{ room.champre_type }} - {{ room.champre_Vue }}</li>
+    {% empty %}
+      <li>Aucune chambre disponible pour la période sélectionnée.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock content %}

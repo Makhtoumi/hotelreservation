@@ -1,0 +1,31 @@
+<!-- create_reservation_for_association.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1>Créer une Réservation pour {{ association.nom }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Créer la Réservation</button>
+    </form>
+</div>
+
+<script>
+    // Enable date picker for the date fields
+    document.addEventListener("DOMContentLoaded", function () {
+        const dateFields = document.querySelectorAll("input[type='date']");
+        dateFields.forEach(function (field) {
+            field.setAttribute("type", "text");
+            field.setAttribute("autocomplete", "off");
+            field.addEventListener("focus", function () {
+                this.type = "date";
+            });
+            field.addEventListener("blur", function () {
+                this.type = "text";
+            });
+        });
+    });
+</script>
+{% endblock content %}

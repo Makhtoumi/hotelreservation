@@ -1,0 +1,6 @@
+{% for room in available_rooms %}
+  <div>
+    <input type="radio" name="chambre" id="room_{{ room.chambre_id }}" value="{{ room.chambre_id }}">
+    <label for="room_{{ room.chambre_id }}">Chambre {{ room.chambre_id }} (Type: {{ room.chambre_type }}, Vue: {{ room.chambre_Vue }})</label>
+  </div>
+{% endfor %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content %}
+<div class="container association-list-page">
+  <div class="search-bar my-4">
+    <form action="{% url 'association_list' %}" method="GET" class="d-flex">
+      <input type="text" id="search-input" name="search_query" class="form-control mr-2" placeholder="Rechercher par ID ou nom">
+      <button type="submit" class="btn btn-primary">Rechercher</button>
+    </form>
+  </div>
+  <h1 class="mb-4">Liste des Clients</h1>
+  <div class="table-responsive">
+    <table class="table table-striped custom-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Consulter</th>
+          {% if not user|user_belongs_to_group:"Réceptionniste" %}
+          <th>Modifier</th>
+          <th>Supprimer</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for association in associations %}
+        {% if association.code != '111111'	 %}
+        <tr>
+          <td>{{ association.code }}</td>
+          <td>{{ association.nom }}</td>
+          <td><a href="{% url 'cons_association' association.code %}" class="btn btn-outline-primary btn-sm">Consulter</a></td>
+          {% if not user|user_belongs_to_group:"Réceptionniste" %}
+          <td><a href="{% url 'update_association' association.code %}" class="btn btn-outline-success btn-sm">Modifier</a></td>
+          <td><a href="{% url 'delete_association' association.code %}" class="btn btn-outline-danger btn-sm">Supprimer</a></td>
+          {% endif %}
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% if not user|user_belongs_to_group:"Réceptionniste" %}
+  <a href="{% url 'create_association' %}" class="btn btn-success custom-btn">Créer un Nouveau Client</a>
+  {% endif %}
+</div>
+</div>
+<style>
+  body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f4f4f4;
+  }
+  .association-list-page {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+  }
+  #search-input {
+    flex: 1;
+  }
+  .table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .table th, .table td {
+    border: none;
+    padding: 12px;
+    text-align: center;
+  }
+  .table th{}
+  .btn-outline-primary, .btn-outline-success, .btn-outline-danger {
+    border: 2px solid;
+  }
+  .btn-sm {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+  .custom-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  .custom-btn:hover {
+    background-color: #218838;
+  }
+</style>
+{% endblock content %}

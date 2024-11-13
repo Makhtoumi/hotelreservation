@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <h2>Mettre à jour la catégorie de saison</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    </form>
+    <a href="{% url 'association_criteria_list' %}" class="btn btn-secondary mt-2">Retour à la liste</a>
+  </div>
+{% endblock %}

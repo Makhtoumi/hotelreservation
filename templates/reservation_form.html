@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+  <h1>Créer une Réservation</h1>
+  <form method="post">
+      {% csrf_token %}
+      {{ reservation_form.as_p }}
+      <button type="submit">Suivant</button>
+  </form>
+</div>
+
+  
+
+
+{% endblock content %}
+

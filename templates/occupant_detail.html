@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <h2>Détails de l'occupant</h2>
+    <p><strong>Nom :</strong> {{ occupant.nom }}</p>
+    <p><strong>Prénom :</strong> {{ occupant.prenom }}</p>
+    <p><strong>Numéro de téléphone :</strong> {{ occupant.num_telephone }}</p>
+    <!-- Add more fields as needed -->
+  </div>
+{% endblock %}

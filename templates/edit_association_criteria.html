@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Modifier les critères de l'association</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Enregistrer les modifications</button>
+    </form>
+  </div>
+{% endblock %}

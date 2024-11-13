@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1>Liste des Chambres</h1>
+    <form class="form-inline mb-3" method="GET" action="{% url 'room_list' %}">
+        <input type="text" name="room_id" class="form-control mr-2" placeholder="Entrez l'ID de la Chambre">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form><br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID de la Chambre</th>
+                <th>Type de Chambre</th>
+                <th>Vue de la Chambre</th>
+                {% if not user|user_belongs_to_group:"Réceptionniste" %}
+
+                <th>Modifier</th>
+                {% endif %}
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+            <tr>
+                <td>{{ room.chambre_id }}</td>
+                <td>{{ room.get_chambre_type_display }}</td>
+                <td>{{ room.get_chambre_Vue_display }}</td>
+                {% if not user|user_belongs_to_group:"Réceptionniste" %}
+                <td><a class="btn btn-outline-primary btn-sm" href="{% url 'edit_room' room.chambre_id %}">Modifier</a></td>
+                {% endif %}
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<style>
+  body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #f4f4f4;
+  }
+  .association-list-page {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+  }
+  #search-input {
+    flex: 1;
+  }
+  .table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .table th, .table td {
+    border: none;
+    padding: 12px;
+    text-align: center;
+  }
+  .btn-outline-primary, .btn-outline-success, .btn-outline-danger {
+    border: 2px solid;
+  }
+  .btn-sm {
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+  .custom-btn {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  .custom-btn:hover {
+    background-color: #218838;
+  }
+</style>
+
+{% endblock content %}

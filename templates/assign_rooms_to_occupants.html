@@ -1,0 +1,37 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h1>Affecter des Chambres aux Occupants</h1>
+    <h2>Réservation pour {{ reservation.association.nom }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {% for occupant in occupants %}
+        {% if occupant.age < 12%}
+        
+        <div>
+            <label for="occupant_{{ occupant.id }}_room">Sélectionnez une Chambre pour {{ occupant.nom }} {{ occupant.prenom }} (Mineur -12 ans)</label>
+            <select id="occupant_{{ occupant.id }}_room" name="occupant_{{ occupant.id }}_room">
+                <option value="" selected>---------</option>
+                {% for room in available_rooms %}
+                <option value="{{ room.chambre_id }}">Chambre {{ room.chambre_id }} - {{ room.chambre_type }}, {{ room.chambre_Vue }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+        <div>
+            <label for="occupant_{{ occupant.id }}_room">Sélectionnez une Chambre pour {{ occupant.nom }} {{ occupant.prenom }}</label>
+            <select id="occupant_{{ occupant.id }}_room" name="occupant_{{ occupant.id }}_room">
+                <option value="" selected>---------</option>
+                {% for room in available_rooms %}
+                <option value="{{ room.chambre_id }}">Chambre {{ room.chambre_id }} - {{ room.chambre_type }}, {{ room.chambre_Vue }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+        {% endfor %}
+        <button type="submit">Affecter les Chambres</button>
+    </form>
+</div>
+{% endblock content %}

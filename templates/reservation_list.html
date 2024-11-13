@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container">
+    <h2>Toutes les Réservations</h2>
+    <form method="get">
+      <input type="text" name="id" placeholder="Rechercher par ID...">
+      <input type="text" name="code_assi" placeholder="Rechercher par Code Client...">
+      <input type="text" name="nom_assi" placeholder="Rechercher par Nom Client...">
+      reservation:<input type="date" name="date_reservation" placeholder="Rechercher par Date Réservation...">
+      Date d'arrivee:<input type="date" name="date_arrivee" placeholder="Rechercher par Date d'Arrivée...">
+      Date de depart:<input type="date" name="date_depart" placeholder="Rechercher par Date de Départ...">
+      <button type="submit">Rechercher</button>
+    </form>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID de reservation</th>
+          <th>Code d'Association</th>
+          <th>Nom d'Association</th>
+          <th>Date de Réservation</th>
+          <th>Date d'Arrivée</th>
+          <th>Date de Départ</th>
+          <th>Pension</th>
+          <th>Catégorie</th>
+          <th>Nombre de Personnes</th>
+          <th>Pax</th>
+          <th>Chambre</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reservation in reservations %}
+          <tr>
+            <td>{{ reservation.id }}</td>
+            <td>{{ reservation.code_assi }}</td>
+            <td>{{ reservation.nom_assi }}</td>
+            <td>{{ reservation.date_reservation }}</td>
+            <td>{{ reservation.date_arrivee }}</td>
+            <td>{{ reservation.date_depart }}</td>
+            <td>{{ reservation.pension }}</td>
+            <td>{{ reservation.categorie }}</td>
+            <td>{{ reservation.nbr_personne }}</td>
+            <td>
+                {% for occupant in reservation.occupant.all %}
+                  <a href="{% url 'occupant_detail' occupant_id=occupant.id %}" >{{occupant.nom}}.{{occupant.prenom}}</a>
+                {% endfor %}
+              </td>
+
+              <td>
+                {% for chambre in reservation.chambre.all %}
+                {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                  <br>  <!-- Add a line break after every 4 rooms -->
+                {% endif %}
+                {{ chambre.chambre_id }}
+                {% endfor %}
+              </td>
+            
+
+
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

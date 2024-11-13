@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: #f7f7f7;
+  }
+  
+  .client-form {
+      width: 100%;
+  }
+  
+  .form-group {
+      margin-bottom: 25px;
+  }
+  
+  label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+  }
+  
+  input[type="text"],
+  select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      transition: border-color 0.3s ease-in-out;
+  }
+  
+  input[type="text"]:focus,
+  select:focus {
+      border-color: #007bff;
+      outline: none;
+  }
+  
+  .select-wrapper {
+      position: relative;
+  }
+  
+  select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      padding-right: 30px; /* Space for dropdown arrow */
+      background-color: #fff;
+      background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+  }
+  
+  select::after {
+      content: '\25BE'; /* Down arrow Unicode */
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      color: #555;
+  }
+  
+  select:hover {
+      border-color: #999;
+  }
+  
+  select:focus {
+      border-color: #007bff;
+      outline: none;
+  }
+  
+  button {
+      padding: 14px 30px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  
+  .btn-primary {
+      background-color: #007bff;
+      color: #fff;
+  }
+  
+  .btn-secondary {
+      background-color: #6c757d;
+      color: #fff;
+      margin-left: 15px;
+  }
+</style>
+
+<div class="container">
+  <h1>Create a Client</h1>
+    <form method="post" class="client-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ client_form.codeclient.id_for_label }}">Code client</label>
+            {{ client_form.codeclient }}
+        </div>
+        <div class="form-group">
+            <label for="{{ client_form.nomclient.id_for_label }}">Nom</label>
+            {{ client_form.nomclient }}
+        </div>
+        <div class="form-group">
+            <label for="{{ client_form.typeclient.id_for_label }}">Type client</label>
+            <div class="select-wrapper">
+                {{ client_form.typeclient }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="{{ client_form.vchambre_type.id_for_label }}">Categorie</label>
+            <div class="select-wrapper">
+                {{ client_form.vchambre_type }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="{{ client_form.typepension.id_for_label }}">Pension</label>
+            <div class="select-wrapper">
+                {{ client_form.typepension }}
+            </div>
+        </div>
+        <button type="submit" name="submit_client" class="btn btn-primary">Save Client</button>
+        <button type="submit" name="create_reservation" class="btn btn-secondary">Create Reservation</button>
+    </form>
+</div>
+{% endblock content %}

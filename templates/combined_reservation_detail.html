@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #007BFF;
+        color: #fff;
+        font-weight: bold;
+    }
+
+    /* Customize the width for the "Identification Client" header */
+    .wide-header {
+        width: 25%;
+    }
+
+    /* Inherit the width for the rest of the headers */
+    th:not(.wide-header) {
+        width: 5%; /* Adjust this width as needed for the rest of the headers */
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .multi-header {
+        text-align: center;
+    }
+
+    .multi-header th {
+        border: none;
+    }
+
+    .center-text {
+        text-align: center;
+    }
+</style>
+<form method="POST" action="#" style="text-align: center;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Generate PDF</button>
+</form>
+<table>
+    <thead>
+        <tr>
+            <th rowspan="2" class="wide-header">Identification Client</th>
+            <th rowspan="2"></th>
+            <th colspan="2" class="multi-header">Presents</th>
+            <th colspan="2" class="multi-header">Arrivees</th>
+            <th colspan="2" class="multi-header">Departs</th>
+            <th colspan="2" class="multi-header">Presents Veil</th>
+            <th colspan="2" class="multi-header">Presents Jours</th>
+        </tr>
+        <tr>
+            <th>Chb</th>
+            <th>Pax</th>
+            <th>Chb</th>
+            <th>Pax</th>
+            <th>Chb</th>
+            <th>Pax</th>
+            <th>Chb</th>
+            <th>Pax</th>
+            <th>Chb</th>
+            <th>Pax</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in reservationn %}
+        <tr>
+            <td>{{ reservation.code }}.{{ reservation.nom }} &nbsp; &nbsp; &nbsp; &nbsp;
+                {% if reservation.code != 1111 %}
+                <a href="{% url 'reservation_list' %}?id=&code_assi={{ reservation.code }}&nom_assi=&date_reservation=&date_arrivee={{ reservation.chosen_date|date:'Y-m-d' }}&date_depart={{ reservation.chosen_date|date:'Y-m-d' }}">
+                    {{ reservation.nbrreseration }}
+                </a>
+                {%elif reservation.code == 1111%}
+                <a href="{% url 'reservation_list_2' %}?id=&code_assi=&nom_assi=&date_reservation=&date_arrivee={{ reservation.chosen_date|date:'Y-m-d' }}&date_depart={{ reservation.chosen_date|date:'Y-m-d' }}">
+                    {{ reservation.nbrreseration }}
+                </a>
+                {% else %} 
+                {{ reservation.nbrreseration }}
+                {% endif %}
+            </td>
+            <td>
+            </td>
+            <td>
+            <a href="{% url 'roomAssignment' %}?search_query=&search_date={{ reservation.chosen_date|date:'Y-m-d' }}">
+
+                {{ reservation.chb }}
+            </a>
+            </td>
+            <td>
+                <a href="{% url 'roomAssignment' %}?search_query=&search_date={{ reservation.chosen_date|date:'Y-m-d' }}">
+
+                {{ reservation.pax }}
+                </a>
+            </td>
+            <td>{{ reservation.chamrearrive }}</td>
+            <td>{{ reservation.paxarrive }}</td>
+            <td>{{ reservation.chamredepart }}</td>
+            <td>{{ reservation.paxdepart }}</td>
+            <td>{{ reservation.prveilchamp }}</td>
+            <td>{{ reservation.prveilpax }}</td>
+            <td>{{ reservation.prejourcham }}</td>
+            <td>{{ reservation.prejour }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

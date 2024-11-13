@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<div class="container">
+  <h1>Bienvenue à l'Hôtel MonastirCenter</h1>
+  <p>Nous sommes ravis de vous accueillir en tant qu'invité à l'Hôtel MonastirCenter, un hôtel 4 étoiles proposant un hébergement et des services de classe mondiale.
+     Que vous voyagiez pour affaires ou pour le plaisir, nous vous garantissons un séjour confortable et agréable.</p>
+  <p>Notre hôtel propose des chambres luxueuses avec des équipements modernes, une superbe piscine avec une vue pittoresque, de délicieuses options de restauration,
+     un centre de fitness entièrement équipé et bien plus encore pour rendre votre séjour inoubliable.</p>
+  <p>Explorez la beauté de Monastir et de ses environs, et laissez notre personnel amical vous aider à profiter au maximum de votre voyage.</p>
+  <p>Découvrez l'élégance, le confort et le service impeccable de l'Hôtel MonastirCenter. Nous avons hâte de vous accueillir !</p>
+</div>
+{% else %}
+<p>Vous devez être connecté pour accéder à cette page.</p>
+{% endif %}
+{% endblock content %}
